@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using CalculadoraApi.Web.Exceptions;
 
 namespace CalculadoraApi.Web.Controllers;
 
@@ -7,46 +8,63 @@ namespace CalculadoraApi.Web.Controllers;
 public class CalculadoraController : ControllerBase
 {
     [HttpGet("Somar")]
-    public IActionResult Soma(double valor1, double valor2)
+    public IActionResult Soma(double valorUm, double valorDois)
     {
-        var calculadora = new Calculadora();
-        if (calculadora.ValidarNumero(valor1) & calculadora.ValidarNumero(valor2))
+        try
         {
-            return Ok(calculadora.Somar(valor1, valor2));
+            var calculadora = new Calculadora();
+            var resultado = calculadora.Somar(valorUm, valorDois);
+            return Ok(resultado);
         }
-        return BadRequest("Um ou mais parâmetros são inválidos!");
+        catch (ErroDeValidacaoException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpGet("Subtrair")]
-    public IActionResult Subtracao(double valor1, double valor2)
+    public IActionResult Subtracao(double valorUm, double valorDois)
     {
-        var calculadora = new Calculadora();
-        if (calculadora.ValidarNumero(valor1) & calculadora.ValidarNumero(valor2))
+        try
         {
-            return Ok(new Calculadora().Substrair(valor1, valor2));
+            var calculadora = new Calculadora();
+            var resultado = calculadora.Substrair(valorUm, valorDois);
+            return Ok(resultado);
         }
-        return BadRequest("Um ou mais parâmetros são inválidos!");
+        catch (ErroDeValidacaoException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpGet("Dividir")]
-    public IActionResult Divisao(double valor1, double valor2)
+    public IActionResult Divisao(double valorUm, double valorDois)
     {
-        var calculadora = new Calculadora();
-        if (calculadora.ValidarNumero(valor1) & calculadora.ValidarNumero(valor2) & valor1 > 0 & valor2 > 0)
+        try
         {
-            return Ok(calculadora.Dividir(valor1, valor2));
+            var calculadora = new Calculadora();
+            var resultado = calculadora.Dividir(valorUm, valorDois);
+            return Ok(resultado);
         }
-        return BadRequest("Um ou mais parâmetros são inválidos!");
+        catch (ErroDeValidacaoException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
 
     [HttpGet("Multiplicar")]
-    public IActionResult Multiplicacao(double valor1, double valor2)
+    public IActionResult Multiplicacao(double valorUm, double valorDois)
     {
-        if (valor1 < 1000 & valor2 < 1000 & valor1 !=0 &valor2 !=0 & valor1 > 0 & valor2 > 0)
+        try
         {
-            return Ok(new Calculadora().Multiplicar(valor1, valor2));
+            var calculadora = new Calculadora();
+            var resultado = calculadora.Multiplicar(valorUm, valorDois);
+            return Ok(resultado);
         }
-        return BadRequest("Um ou mais parâmetros são inválidos!");
+        catch (ErroDeValidacaoException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }
